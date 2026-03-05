@@ -1,0 +1,8 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: REPLACE_ME_REPO_NAME
+spec:
+  location: REPLACE_ME_REGION
+  format: DOCKER
+  description: "Docker repository for Python API (managed by KCC)"

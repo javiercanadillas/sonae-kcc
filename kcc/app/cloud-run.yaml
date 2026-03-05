@@ -1,0 +1,38 @@
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: users-api
+spec:
+  location: REPLACE_ME_REGION
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cloudsql-instances: REPLACE_ME_PROJECT_ID:REPLACE_ME_REGION:test-sql-cc
+    spec:
+      containers:
+        - name: users-api
+          image: users-api-image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_USER
+              value: "app-user"
+            - name: DB_PASS
+              value: "REPLACE_ME_PASSWORD"
+            - name: DB_NAME
+              value: "users-db"
+            - name: DB_SOCKET_DIR
+              value: "/cloudsql"
+            - name: INSTANCE_CONNECTION_NAME
+              value: "REPLACE_ME_PROJECT_ID:REPLACE_ME_REGION:test-sql-cc"
+---
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunServiceIAMPolicyMember
+metadata:
+  name: users-api-allow-unauthenticated
+spec:
+  resourceRef:
+    name: users-api
+    kind: RunService
+  role: roles/run.invoker
+  member: allUsers

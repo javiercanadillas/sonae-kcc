@@ -1,0 +1,13 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: test-vm-cc
+spec:
+  location: REPLACE_ME_ZONE
+  machineType: e2-medium
+  bootDisk:
+    initializeParams:
+      sourceImage: projects/debian-cloud/global/images/family/debian-11
+  networkInterface:
+    - networkRef:
+        external: default

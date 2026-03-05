@@ -1,0 +1,44 @@
+resources:
+- config-connector.yaml
+- sql-instance.yaml
+- compute-instance.yaml
+- sql-db-user.yaml
+- ../params-cm.yaml
+
+replacements:
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.region
+  targets:
+  - select:
+      kind: SQLInstance
+    fieldPaths:
+    - spec.region
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.zone
+  targets:
+  - select:
+      kind: ComputeInstance
+    fieldPaths:
+    - spec.location
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.gsa-email
+  targets:
+  - select:
+      kind: ConfigConnector
+    fieldPaths:
+    - spec.googleServiceAccount
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.db-password
+  targets:
+  - select:
+      kind: SQLUser
+    fieldPaths:
+    - spec.password.value

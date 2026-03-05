@@ -1,0 +1,79 @@
+resources:
+- artifact-registry.yaml
+- cloud-run.yaml
+- ../params-cm.yaml
+
+replacements:
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.region
+  targets:
+  - select:
+      kind: ArtifactRegistryRepository
+    fieldPaths:
+    - spec.location
+  - select:
+      kind: RunService
+    fieldPaths:
+    - spec.location
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.repo-name
+  targets:
+  - select:
+      kind: ArtifactRegistryRepository
+    fieldPaths:
+    - metadata.name
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.full-image-name
+  targets:
+  - select:
+      kind: RunService
+    fieldPaths:
+    - spec.template.spec.containers.[name=users-api].image
+
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.project-id
+  targets:
+  - select:
+      kind: RunService
+    fieldPaths:
+    - metadata.annotations.[run.googleapis.com/cloudsql-instances]
+    - spec.template.spec.containers.[name=users-api].env.[name=INSTANCE_CONNECTION_NAME].value
+    options:
+      delimiter: ":"
+      index: 0
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.region
+  targets:
+  - select:
+      kind: RunService
+    fieldPaths:
+    - metadata.annotations.[run.googleapis.com/cloudsql-instances]
+    - spec.template.spec.containers.[name=users-api].env.[name=INSTANCE_CONNECTION_NAME].value
+    options:
+      delimiter: ":"
+      index: 1
+
+- source:
+    kind: ConfigMap
+    name: kcc-params
+    fieldPath: data.db-password
+  targets:
+  - select:
+      kind: RunService
+    fieldPaths:
+    - spec.template.spec.containers.[name=users-api].env.[name=DB_PASS].value
+
+images:
+- name: users-api-image
+  newName: REPLACE_ME_IMAGE
+  newTag: latest

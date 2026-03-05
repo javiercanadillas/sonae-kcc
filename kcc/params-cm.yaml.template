@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kcc-params
+data:
+  project-id: "${PROJECT_ID}"
+  region: "${REGION}"
+  zone: "${ZONE}"
+  gsa-email: "${GSA_EMAIL}"
+  repo-name: "${REPO_NAME}"
+  full-image-name: "${FULL_IMAGE_NAME}"
+  db-password: "${DB_PASSWORD}"

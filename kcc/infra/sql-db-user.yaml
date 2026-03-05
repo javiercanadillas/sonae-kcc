@@ -1,0 +1,19 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: users-db
+spec:
+  instanceRef:
+    name: test-sql-cc
+  charset: UTF8
+  collation: en_US.UTF8
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: app-user
+spec:
+  instanceRef:
+    name: test-sql-cc
+  password:
+    value: "REPLACE_ME_PASSWORD"
